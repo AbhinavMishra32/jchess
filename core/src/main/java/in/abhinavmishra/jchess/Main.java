@@ -62,6 +62,10 @@ public class Main extends ApplicationAdapter {
 
         bucketRectangle = new Rectangle();
         dropRectangle = new Rectangle();
+
+        music.setLooping(true);
+        music.setVolume(.5f);
+        music.play();
     }
 
     @Override
@@ -104,7 +108,7 @@ public class Main extends ApplicationAdapter {
 
         float delta = Gdx.graphics.getDeltaTime();
 
-        bucketRectangle.set(bucketSprite.getX())
+        bucketRectangle.set(bucketSprite.getX(), bucketSprite.getY(), bucketWidth, bucketHeight);
 
         for (int i = dropSprites.size - 1; i >= 0; i--) {
             Sprite dropSprite = dropSprites.get(i);
@@ -112,8 +116,13 @@ public class Main extends ApplicationAdapter {
             float dropHeight = dropSprite.getHeight();
 
             dropSprite.translateY(-2f * delta);
+            dropRectangle.set(dropSprite.getX(), dropSprite.getY(), dropWidth, dropHeight);
 
             if (dropSprite.getY() < -dropHeight) dropSprites.removeIndex(i);
+            else if (bucketRectangle.overlaps(dropRectangle)) {
+                dropSprites.removeIndex(i);
+                dropSound.play();
+            }
         }
 
         dropTimer += delta;
