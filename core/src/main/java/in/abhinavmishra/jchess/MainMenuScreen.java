@@ -1,5 +1,6 @@
 package in.abhinavmishra.jchess;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -42,33 +44,46 @@ public class MainMenuScreen implements Screen {
     Rectangle bucketRectangle;
     Rectangle dropRectangle;
 
+    Logger log;
+
+    private boolean initialized = false;
+
 
     public MainMenuScreen(final Drop game) {
         this.game = game;
+        log = new Logger("MainMenuScreen", Application.LOG_INFO);
+        log.info("ctor: no GL resources created");
+        // keep constructor light: do not create Textures/SpriteBatch here
+        viewport = new FitViewport(10, 6); // safe to create here
+        touchPos = new Vector2();
+        dropSprites = new Array<>();
+        bucketRectangle = new Rectangle();
+        dropRectangle = new Rectangle();
+    }
+
+    @Override
+    public void show() {
+        if (initialized) return;
         backgroundTexture = new Texture("background.png");
         bucketTexture = new Texture("bucket.png");
         dropTexture = new Texture("drop.png");
+
         dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.mp3"));
         music = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
-        // learn AssetManager to manage large amount of assets
 
         spriteBatch = new SpriteBatch();
-        viewport = new FitViewport(10, 6);
 
         bucketSprite = new Sprite(bucketTexture);
         bucketSprite.setSize(1, 1);
 
-        touchPos = new Vector2();
-
-        dropSprites = new Array<>();
-
-        bucketRectangle = new Rectangle();
-        dropRectangle = new Rectangle();
-
         music.setLooping(true);
         music.setVolume(.5f);
         music.play();
+
+        initialized = true;
+        log.info("GL resources initialized in show()");
     }
+
 
     @Override
     public void resize (int width, int height) {
@@ -99,9 +114,6 @@ public class MainMenuScreen implements Screen {
         }
     }
 
-    public void show() {
-        music.play();
-    }
 
     private void logic() {
         float worldWidth = viewport.getWorldWidth();
@@ -126,6 +138,7 @@ public class MainMenuScreen implements Screen {
 
             if (dropSprite.getY() < -dropHeight) dropSprites.removeIndex(i);
             else if (bucketRectangle.overlaps(dropRectangle)) {
+//                log.info("Collided with: " + "[" + dropRectangle.toString() + "]");
                 dropSprites.removeIndex(i);
                 dropSound.play();
             }
@@ -174,8 +187,15 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-//        batch.dispose();
-//        image.dispose();
+        if (!initialized) return;
+        if (backgroundTexture != null) backgroundTexture.dispose();
+        if (bucketTexture != null) bucketTexture.dispose();
+        if (dropTexture != null) dropTexture.dispose();
+        if (spriteBatch != null) spriteBatch.dispose();
+        if (dropSound != null) dropSound.dispose();
+        if (music != null) music.dispose();
+        initialized = false;
+        log.info("disposed MainMenuScreen GL resources");
     }
 
     @Override

@@ -15,22 +15,14 @@ public class Drop extends Game {
 
     public void create() {
         batch = new SpriteBatch();
-
-        font = new BitmapFont();
         viewport = new FitViewport(8, 5);
 
-        font.setUseIntegerPositions(false);
-        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-        font.getData().setScale(viewport.getWorldHeight()/ 100f);
-        this.setScreen(new MainMenuScreen(this));
+        this.setScreen(new MainMenuScreen(this)); // font will be created inside the screen
     }
 
-    public void render() {
-        super.render();
-    }
-
+    @Override
     public void dispose() {
         batch.dispose();
-        font.dispose();
+        if (font != null) font.dispose();
     }
 }
