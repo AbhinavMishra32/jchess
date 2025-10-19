@@ -1,6 +1,5 @@
 package in.abhinavmishra.jchess;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -18,8 +16,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class Main extends ApplicationAdapter {
+
+public class MainMenuScreen implements Screen {
+
+    final Drop game;
+
     private Texture backgroundTexture;
     private Texture bucketTexture;
     private Texture dropTexture;
@@ -41,8 +42,9 @@ public class Main extends ApplicationAdapter {
     Rectangle bucketRectangle;
     Rectangle dropRectangle;
 
-    @Override
-    public void create() {
+
+    public MainMenuScreen(final Drop game) {
+        this.game = game;
         backgroundTexture = new Texture("background.png");
         bucketTexture = new Texture("bucket.png");
         dropTexture = new Texture("drop.png");
@@ -74,7 +76,7 @@ public class Main extends ApplicationAdapter {
     }
 
     @Override
-    public void render() {
+    public void render(float delta) {
         input();
         logic();
         draw();
@@ -97,9 +99,13 @@ public class Main extends ApplicationAdapter {
         }
     }
 
+    public void show() {
+        music.play();
+    }
+
     private void logic() {
         float worldWidth = viewport.getWorldWidth();
-        float worldHeight = viewport.getWorldWidth();
+        float worldHeight = viewport.getWorldHeight();
 
         float bucketWidth = bucketSprite.getWidth();
         float bucketHeight = bucketSprite.getHeight();
@@ -149,6 +155,7 @@ public class Main extends ApplicationAdapter {
             dropSprite.draw(spriteBatch);
         }
 
+        game.font.draw(spriteBatch, "Hello World!", 1, 4); // x=1, y=4 in world units
         spriteBatch.end();
     }
 
@@ -170,4 +177,14 @@ public class Main extends ApplicationAdapter {
 //        batch.dispose();
 //        image.dispose();
     }
+
+    @Override
+    public void pause() {};
+
+    @Override
+    public void resume() {};
+
+    @Override
+    public void hide() {};
+
 }
