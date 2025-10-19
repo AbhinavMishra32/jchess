@@ -2,6 +2,7 @@ package in.abhinavmishra.jchess;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -19,7 +20,8 @@ public class Drop extends Game {
         viewport = new FitViewport(8, 5);
 
         font.setUseIntegerPositions(false);
-        font.getData().setScale(viewport.getWorldHeight()/ Gdx.graphics.getHeight());
+        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        font.getData().setScale(viewport.getWorldHeight()/ 100f);
         this.setScreen(new MainMenuScreen(this));
     }
 
