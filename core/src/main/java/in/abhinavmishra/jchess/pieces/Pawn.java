@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class Pawn extends Piece {
     private int[][] allowedMoves;
 
-    public Pawn(PieceColor pieceColor, String name, Texture texture, int row, int col) {
-        super(pieceColor, name, texture, row, col);
+    public Pawn(PieceColor pieceColor, String name, Texture texture, int row, int col, int x, int y) {
+        super(pieceColor, name, texture, row, col, x, y);
     }
 
     @Override

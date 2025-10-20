@@ -10,14 +10,18 @@ public abstract class Piece {
     protected int row;
     protected int col;
     protected boolean isSelected;
+    protected int x;
+    protected int y;
 
     private int[][] allowedMoves = {};
 
-    public Piece(PieceColor pieceColor, String name, Texture texture, int row, int col) {
+    public Piece(PieceColor pieceColor, String name, Texture texture, int row, int col, int x, int y) {
         this.name = (name != null) ? name : "";
         this.texture = texture;
         this.row = row;
         this.col = col;
+        this.x = x;
+        this.y = y;
         this.pieceColor = pieceColor;
         setAllowedMoves();
     }
@@ -34,4 +38,23 @@ public abstract class Piece {
         return name;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 }

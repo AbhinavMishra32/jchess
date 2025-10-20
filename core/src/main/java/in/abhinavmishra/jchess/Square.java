@@ -46,7 +46,7 @@ public class Square {
 
     public void drawPiece(SpriteBatch batch) {
         if (piece != null && piece.texture != null) {
-            batch.draw(piece.texture, x, y, size, size);
+            batch.draw(piece.texture, piece.getX(), piece.getY(), size, size);
         }
     }
 
@@ -82,6 +82,14 @@ public class Square {
 
     public float getX() {
         return x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public void setX(float x) {
+        this.x = x;
     }
 
     public float getY() {

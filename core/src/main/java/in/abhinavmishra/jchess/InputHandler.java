@@ -20,11 +20,17 @@ public class InputHandler extends InputAdapter {
         board.getSquares().forEach(squares -> {squares.forEach(square -> {
             if (square.isInSquare(screenX, correctedY)) {
                 selectedSquare = square;
-                if (square.getPiece() != null) {
-                    System.out.println(square.getPiece().getName());
+                if (selectedSquare.getPiece() != null) {
+                    System.out.println(selectedSquare.getPiece().getName());
+                    selectedSquare.getPiece().setSelected(true);
+                    if (selectedSquare.getPiece().isSelected) {
+                        selectedSquare.getPiece().setX(screenX);
+                        selectedSquare.getPiece().setY(correctedY);
+                    }
                 }
             }
         });});
+
         return super.touchDragged(screenX, screenY, pointer);
     }
 }

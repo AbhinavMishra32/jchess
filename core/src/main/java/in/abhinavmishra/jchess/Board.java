@@ -17,16 +17,18 @@ public class Board {
     ShapeRenderer shapeRenderer;
     SpriteBatch batch;
     private static final BitmapFont font = new BitmapFont();
+    final private float squareSize;
 
 
     public Board(float size) {
         shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
-        createBoard(size);
+        this.squareSize = size;
+        createBoard();
         setPieces();
     }
 
-    private void createBoard(final float squareSize) {
+    private void createBoard() {
         for (int row = 0; row < 8; row++) {
             ArrayList<Square> rowList = new ArrayList<>(8);
             for (int col = 0; col < 8; col++) {
@@ -47,7 +49,7 @@ public class Board {
     }
 
     private void setPieces() {
-        Piece testPawn = new Pawn(PieceColor.WHITE,"Pawn",Assets.PAWN_TEXTURE, 0, 4);
+        Piece testPawn = new Pawn(PieceColor.WHITE,"Pawn",Assets.PAWN_TEXTURE, 0, 4, (int) (0 * squareSize), (int) (4 * squareSize));
         squares.get(0).get(4).setPiece(testPawn);
     }
 
