@@ -16,6 +16,8 @@ public class Board {
     private ArrayList<ArrayList<Square>> squares = new ArrayList<>();
     ShapeRenderer shapeRenderer;
     SpriteBatch batch;
+    private static final BitmapFont font = new BitmapFont();
+
 
     public Board(float size) {
         shapeRenderer = new ShapeRenderer();
@@ -25,19 +27,28 @@ public class Board {
     }
 
     private void createBoard(final float squareSize) {
-        for (int i = 0; i < 8; i++) {
-            ArrayList<Square> row = new ArrayList<>(8);
-            for (int j = 0; j < 8; j++) {
-                Square square = new Square(squareSize, shapeRenderer,i * squareSize, j * squareSize, (i + j) % 2 == 0 ? Color.WHITE : Color.GRAY, j, i);
-                row.add(j, square);
+        for (int row = 0; row < 8; row++) {
+            ArrayList<Square> rowList = new ArrayList<>(8);
+            for (int col = 0; col < 8; col++) {
+                float x = col * squareSize;
+                float y = row * squareSize;
+                Square square = new Square(squareSize,
+                    shapeRenderer,
+                    x,
+                    y,
+                    (row + col) % 2 == 0 ? Color.WHITE : Color.GRAY,
+                    row,
+                    col
+                );
+                rowList.add(square);
             }
-            squares.add(row);
+            squares.add(rowList);
         }
     }
 
     private void setPieces() {
-        Piece testPawn = new Pawn(PieceColor.WHITE,"Pawn", new Texture("pieces/white-pawn.png"), 2, 2);
-        squares.get(2).get(2).setPiece(testPawn);
+        Piece testPawn = new Pawn(PieceColor.WHITE,"Pawn",Assets.PAWN_TEXTURE, 0, 4);
+        squares.get(0).get(4).setPiece(testPawn);
     }
 
     public void renderBoard() {
@@ -47,13 +58,17 @@ public class Board {
                 square.drawSquare();
             }
         }
-        squares.get(2).get(2).drawAllowedMoves(squares);
+        squares.get(0).get(4).drawAllowedMoves(squares);
         shapeRenderer.end();
     }
 
 
     public Square getSquareAt(int row, int col) {
         return squares.get(row).get(col);
+    }
+
+    public ArrayList<ArrayList<Square>> getSquares() {
+        return squares;
     }
 
 
@@ -64,12 +79,17 @@ public class Board {
             for (Square square : row) {
                 square.drawPiece(batch);
                 if (Config.DEV) {
-                    BitmapFont font = new BitmapFont();
-                    font.draw(batch, square.getRow() + "" + square.getCol(), square.getX(), square.getY());
+                    font.draw(batch, square.getRow() + "" + square.getCol(), square.getX(), square.getY() + 14);
                 }
             }
         }
         batch.end();
 //        shapeRenderer.end();
+    }
+
+    public void boardDispose() {
+        font.dispose();
+        batch.dispose();
+        shapeRenderer.dispose();
     }
 }

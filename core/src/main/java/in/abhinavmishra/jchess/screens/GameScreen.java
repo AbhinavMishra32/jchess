@@ -2,7 +2,9 @@ package in.abhinavmishra.jchess.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 import in.abhinavmishra.jchess.Board;
 import in.abhinavmishra.jchess.ChessGame;
@@ -13,11 +15,13 @@ public class GameScreen implements Screen {
     private Board board;
     private float screenWidth;
     private float screenHeight;
+    private Camera camera;
 
     public GameScreen(ChessGame game) {
         this.screenWidth = Gdx.graphics.getWidth();
         this.screenHeight = Gdx.graphics.getHeight();
         this.game = game;
+        camera = new OrthographicCamera();
         this.board = new Board(screenWidth/8);
         Gdx.input.setInputProcessor(new InputHandler(board));
     }
@@ -58,6 +62,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        board.boardDispose();
     }
 }

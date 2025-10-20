@@ -55,6 +55,8 @@ public class Square {
         int[][] allowedMoves = piece.getAllowedMoves();
         for(ArrayList<Square> row : squares) {
             for(Square square : row) {
+                // optimize this later as stream + lambda creates temporary objects every frame
+                // (main cause of increasing objects in heap)
                 boolean isAllowed = Arrays.stream(allowedMoves)
                     .anyMatch(move -> move[0] == square.getRow() && move[1] == square.getCol());
 
@@ -88,6 +90,10 @@ public class Square {
 
     public float getSize() {
         return size;
+    }
+
+    public Piece getPiece() {
+        return piece;
     }
 
 

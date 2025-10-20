@@ -14,7 +14,7 @@ public abstract class Piece {
     private int[][] allowedMoves = {};
 
     public Piece(PieceColor pieceColor, String name, Texture texture, int row, int col) {
-        this.name = name;
+        this.name = (name != null) ? name : "";
         this.texture = texture;
         this.row = row;
         this.col = col;
@@ -28,6 +28,10 @@ public abstract class Piece {
     protected boolean isVisibleOnBoard(int row, int col) {
         if (row < 0 || row >= 8 || col < 0 || col >= 8) return false;
         else return true;
+    }
+
+    public String getName() {
+        return name;
     }
 
 }
