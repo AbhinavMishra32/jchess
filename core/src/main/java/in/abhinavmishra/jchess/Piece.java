@@ -25,7 +25,7 @@ public abstract class Piece {
     protected abstract int[][] getAllowedMoves();
 
     protected boolean isVisibleOnBoard(int row, int col) {
-        if (row < 0 || row > 8 || col < 0 || col > 8) return false;
+        if (row < 0 || row >= 8 || col < 0 || col >= 8) return false;
         else return true;
     }
 

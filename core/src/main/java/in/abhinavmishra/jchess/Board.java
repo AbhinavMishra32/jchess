@@ -35,8 +35,8 @@ public class Board {
     }
 
     private void setPieces() {
-        Piece testPawn = new Pawn(PieceColor.WHITE,"Pawn", new Texture("pieces/white-pawn.png"), 0, 0);
-        squares.get(0).get(0).setPiece(testPawn);
+        Piece testPawn = new Pawn(PieceColor.WHITE,"Pawn", new Texture("pieces/white-pawn.png"), 2, 2);
+        squares.get(2).get(2).setPiece(testPawn);
     }
 
     public void renderBoard() {
@@ -44,9 +44,9 @@ public class Board {
         for (ArrayList<Square> row : squares) {
             for(Square square : row) {
                 square.drawSquare();
-                square.drawAllowedMoves(squares);
             }
         }
+        squares.get(2).get(2).drawAllowedMoves(squares);
         shapeRenderer.end();
     }
 
@@ -55,13 +55,13 @@ public class Board {
 
     public void renderPieces(){
         batch.begin();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for (ArrayList<Square> row : squares) {
             for (Square square : row) {
                 square.drawPiece(batch);
             }
         }
         batch.end();
-        shapeRenderer.end();
+//        shapeRenderer.end();
     }
 }

@@ -1,14 +1,18 @@
 package in.abhinavmishra.jchess;
 
+import com.badlogic.gdx.ApplicationLogger;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Logger;
+import sun.rmi.runtime.Log;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Square {
+    Logger log;
     private Piece piece;
     private float size;
     private boolean hovered = false;
@@ -20,6 +24,7 @@ public class Square {
     private int col;
 
     public Square(float size, ShapeRenderer shapeRenderer, float x, float y, Color color, int row, int col) {
+        log = new Logger("Square");
         this.size = size;
         this.shapeRenderer = shapeRenderer;
         this.x = x;
@@ -36,14 +41,10 @@ public class Square {
     public void drawSquare() {
         shapeRenderer.setColor(color);
         shapeRenderer.rect(x, y, size, size);
-        // use this end after rendering every shape... in the board renderer
-//        shapeRenderer.end();
     }
 
 
     public void drawPiece(SpriteBatch batch) {
-//        shapeRenderer.setColor(Color.GREEN);
-//        shapeRenderer.rect(x, y, size/2, size/2);
         if (piece != null && piece.texture != null) {
             batch.draw(piece.texture, x, y, size, size);
         }
@@ -52,7 +53,6 @@ public class Square {
     public void drawAllowedMoves(ArrayList<ArrayList<Square>> squares) {
         if (piece == null) return;
         int[][] allowedMoves = piece.getAllowedMoves();
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for(ArrayList<Square> row : squares) {
             for(Square square : row) {
                 boolean isAllowed = Arrays.stream(allowedMoves)

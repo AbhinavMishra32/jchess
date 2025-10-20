@@ -17,11 +17,11 @@ public class Pawn extends Piece {
         ArrayList<int[]> moves = new ArrayList<>();
         moves.add(new int[]{row, col});
 
-        if (isVisibleOnBoard(row + 1, col - 1)) {
+        if (isVisibleOnBoard(row + 1, col)) {
             moves.add(new int[]{row + 1, col - 1});
         }
 
-        if (isVisibleOnBoard(row + 1, col + 1)) {
+        if (isVisibleOnBoard(row - 1, col)) {
             moves.add(new int[]{row + 1, col + 1});
         }
 
