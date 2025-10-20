@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
 import in.abhinavmishra.jchess.Board;
 import in.abhinavmishra.jchess.ChessGame;
+import in.abhinavmishra.jchess.InputHandler;
 
 public class GameScreen implements Screen {
     final ChessGame game;
@@ -18,6 +19,7 @@ public class GameScreen implements Screen {
         this.screenHeight = Gdx.graphics.getHeight();
         this.game = game;
         this.board = new Board(screenWidth/8);
+        Gdx.input.setInputProcessor(new InputHandler(board));
     }
 
     @Override

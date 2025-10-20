@@ -66,6 +66,10 @@ public class Square {
         }
     }
 
+    public boolean isInSquare(int x, int y) {
+        return x < this.x + size && x >= this.x && y < this.y + size && y > this.y;
+    }
+
     public int getRow() {
         return row;
     }

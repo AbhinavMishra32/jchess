@@ -2,6 +2,7 @@ package in.abhinavmishra.jchess;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import in.abhinavmishra.jchess.pieces.Pawn;
@@ -27,7 +28,7 @@ public class Board {
         for (int i = 0; i < 8; i++) {
             ArrayList<Square> row = new ArrayList<>(8);
             for (int j = 0; j < 8; j++) {
-                Square square = new Square(squareSize, shapeRenderer,i * squareSize, j * squareSize, (i + j) % 2 == 0 ? Color.WHITE : Color.GRAY, i, j);
+                Square square = new Square(squareSize, shapeRenderer,i * squareSize, j * squareSize, (i + j) % 2 == 0 ? Color.WHITE : Color.GRAY, j, i);
                 row.add(j, square);
             }
             squares.add(row);
@@ -51,6 +52,9 @@ public class Board {
     }
 
 
+    public Square getSquareAt(int row, int col) {
+        return squares.get(row).get(col);
+    }
 
 
     public void renderPieces(){
@@ -59,6 +63,10 @@ public class Board {
         for (ArrayList<Square> row : squares) {
             for (Square square : row) {
                 square.drawPiece(batch);
+                if (Config.DEV) {
+                    BitmapFont font = new BitmapFont();
+                    font.draw(batch, square.getRow() + "" + square.getCol(), square.getX(), square.getY());
+                }
             }
         }
         batch.end();

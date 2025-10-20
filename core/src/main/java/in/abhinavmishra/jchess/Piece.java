@@ -9,6 +9,7 @@ public abstract class Piece {
     Texture texture;
     protected int row;
     protected int col;
+    protected boolean isSelected;
 
     private int[][] allowedMoves = {};
 
