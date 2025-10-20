@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
+import in.abhinavmishra.jchess.Board;
 import in.abhinavmishra.jchess.ChessGame;
 
 public class GameScreen implements Screen {
@@ -27,7 +28,8 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(new Color(227 / 255f, 202 / 255f, 184 / 255f, 0.7f));
-        board.render();
+        board.renderBoard();
+        board.renderPieces();
     }
 
     @Override
