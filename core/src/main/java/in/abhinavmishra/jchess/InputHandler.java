@@ -2,19 +2,22 @@ package in.abhinavmishra.jchess;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Logger;
+import com.sun.org.apache.bcel.internal.generic.ARRAYLENGTH;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class InputHandler extends InputAdapter {
     Board board;
     Square selectedSquare;
     Piece selectedPiece;
-    Logger log;
     Integer deltaX;
     Integer deltaY;
 
     public InputHandler(Board board) {
         this.board = board;
-        this.log = new Logger("InputHandler");
     }
 
     @Override
@@ -24,9 +27,9 @@ public class InputHandler extends InputAdapter {
         board.getSquares().forEach(squares -> {squares.forEach(square -> {
             if (square.isInSquare(screenX, correctedY) && square.getPiece() != null) {
                 selectedSquare = square;
-                selectedSquare.getPiece().setSelected(true);
-                selectedSquare.setSelected(true);
                 selectedPiece = selectedSquare.getPiece();
+                selectedPiece.setSelected(true);
+                selectedSquare.setSelected(true);
                 selectedPiece.setSize((int) selectedSquare.getSize());
                 deltaX = selectedSquare.getPiece().getX() - screenX;
                 deltaY = selectedSquare.getPiece().getY() - correctedY;
@@ -48,10 +51,36 @@ public class InputHandler extends InputAdapter {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (selectedSquare != null && selectedPiece != null) {
-            // put the piece in the closest square when we stop dragging
-//            selectedPiece.setSelected(false);
             selectedSquare.setSelected(false);
-//            selectedPiece = null;
+            selectedPiece.setSelected(false);
+
+            Square newSquare = board.getSquareAtCoords(
+                selectedPiece.getCenterCoords()[0],
+                selectedPiece.getCenterCoords()[1],
+                selectedSquare
+            );
+
+            ArrayList<Square> allowedSquares = board.getAllowedSquares(selectedSquare);
+
+            boolean isAllowed = false;
+
+            if (allowedSquares != null) {
+                for (Square square : allowedSquares) {
+                    if (square.getRow() == newSquare.getRow() && square.getCol() == newSquare.getCol()) {
+                        isAllowed = true;
+                        break;
+                    }
+                }
+            }
+
+            if (isAllowed) {
+                selectedSquare.setPiece(null);
+                newSquare.setPiece(selectedPiece);
+            } else {
+                selectedSquare.setPiece(selectedPiece);
+            }
+
+            selectedPiece = null;
             selectedSquare = null;
         }
         return super.touchUp(screenX, screenY, pointer, button);

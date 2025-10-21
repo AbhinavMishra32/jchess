@@ -15,8 +15,6 @@ public class Pawn extends Piece {
     @Override
     protected void setAllowedMoves() {
         ArrayList<int[]> moves = new ArrayList<>();
-        moves.add(new int[]{row, col});
-
         if (isVisibleOnBoard(row + 1, col)) {
             moves.add(new int[]{row + 1, col - 1});
         }

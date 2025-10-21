@@ -29,6 +29,10 @@ public class Board {
         setPieces();
     }
 
+    public void setSquares(ArrayList<ArrayList<Square>> squares) {
+        this.squares = squares;
+    }
+
     private void createBoard() {
         for (int row = 0; row < 8; row++) {
             ArrayList<Square> rowList = new ArrayList<>(8);
@@ -47,6 +51,21 @@ public class Board {
             }
             squares.add(rowList);
         }
+    }
+
+    public ArrayList<Square> getAllowedSquares(Square square) {
+        ArrayList<Square> allowedSquares = new ArrayList<>();
+        if (square.getPiece() != null) {
+            for (int[] allowedMoves : square.getPiece().getAllowedMoves()) {
+                if (allowedMoves == null || allowedMoves.length < 2) continue;
+                int row = allowedMoves[0];
+                int col = allowedMoves[1];
+                if (row >= 0 && row < 8 && col >= 0 && col < 8) {
+                    allowedSquares.add(this.getSquareAt(row, col));
+                }
+            }
+        }
+        return allowedSquares;
     }
 
     private void setPieces() {
@@ -78,6 +97,16 @@ public class Board {
         return squares;
     }
 
+    public Square getSquareAtCoords(int x, int y, Square fallbackSquare) {
+        for (ArrayList<Square> row : squares) {
+            for (Square square : row) {
+                if (square.isInSquare(x, y)) {
+                    return square;
+                }
+            }
+        }
+        return fallbackSquare;
+    }
 
     public void renderPieces(){
         batch.begin();

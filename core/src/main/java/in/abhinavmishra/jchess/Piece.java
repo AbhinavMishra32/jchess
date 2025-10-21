@@ -44,6 +44,10 @@ public abstract class Piece {
         return name;
     }
 
+    public int[] getCenterCoords() {
+        return new int[]{x + size / 2, y + size / 2};
+    }
+
     public int getX() {
         return x;
     }

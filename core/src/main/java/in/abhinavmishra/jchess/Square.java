@@ -36,6 +36,13 @@ public class Square {
 
     public void setPiece(Piece piece) {
         this.piece = piece;
+        if (piece != null) {
+            piece.setX((int) this.x);
+            piece.setY((int) this.y);
+            piece.row = this.row;
+            piece.col = this.col;
+            piece.setAllowedMoves();
+        }
     }
 
     public void drawSquare() {
