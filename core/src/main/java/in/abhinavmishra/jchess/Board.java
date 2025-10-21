@@ -61,7 +61,11 @@ public class Board {
                 square.drawSquare();
             }
         }
-        squares.get(2).get(4).drawAllowedMoves(squares);
+        squares.forEach(squares -> {squares.forEach(square -> {
+            if (square.isSelected()) {
+                square.drawAllowedMoves(this.squares);
+            }
+        });});
         shapeRenderer.end();
     }
 

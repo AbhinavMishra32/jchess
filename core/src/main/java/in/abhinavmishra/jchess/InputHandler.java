@@ -25,6 +25,7 @@ public class InputHandler extends InputAdapter {
             if (square.isInSquare(screenX, correctedY) && square.getPiece() != null) {
                 selectedSquare = square;
                 selectedSquare.getPiece().setSelected(true);
+                selectedSquare.setSelected(true);
                 selectedPiece = selectedSquare.getPiece();
                 selectedPiece.setSize((int) selectedSquare.getSize());
                 deltaX = selectedSquare.getPiece().getX() - screenX;
@@ -49,6 +50,7 @@ public class InputHandler extends InputAdapter {
         if (selectedSquare != null && selectedPiece != null) {
             // put the piece in the closest square when we stop dragging
 //            selectedPiece.setSelected(false);
+            selectedSquare.setSelected(false);
 //            selectedPiece = null;
             selectedSquare = null;
         }

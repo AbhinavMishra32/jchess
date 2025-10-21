@@ -15,7 +15,6 @@ public class Square {
     Logger log;
     private Piece piece;
     private float size;
-    private boolean hovered = false;
     private ShapeRenderer shapeRenderer;
     private Color color;
     private float x;
@@ -103,6 +102,14 @@ public class Square {
 
     public Piece getPiece() {
         return piece;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 
 
