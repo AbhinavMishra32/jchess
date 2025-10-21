@@ -22,6 +22,7 @@ public class Square {
     private float y;
     private int row;
     private int col;
+    private boolean isSelected = false;
 
     public Square(float size, ShapeRenderer shapeRenderer, float x, float y, Color color, int row, int col) {
         log = new Logger("Square");

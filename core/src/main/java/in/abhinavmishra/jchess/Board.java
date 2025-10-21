@@ -1,5 +1,6 @@
 package in.abhinavmishra.jchess;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -49,8 +50,8 @@ public class Board {
     }
 
     private void setPieces() {
-        Piece testPawn = new Pawn(PieceColor.WHITE,"Pawn",Assets.PAWN_TEXTURE, 0, 4, (int) (0 * squareSize), (int) (4 * squareSize));
-        squares.get(0).get(4).setPiece(testPawn);
+        Piece testPawn = new Pawn(PieceColor.WHITE,"Pawn",Assets.PAWN_TEXTURE, 2, 4, (int) (4 * squareSize), (int) (2 * squareSize));
+        squares.get(2).get(4).setPiece(testPawn);
     }
 
     public void renderBoard() {
@@ -60,7 +61,7 @@ public class Board {
                 square.drawSquare();
             }
         }
-        squares.get(0).get(4).drawAllowedMoves(squares);
+        squares.get(2).get(4).drawAllowedMoves(squares);
         shapeRenderer.end();
     }
 
@@ -81,7 +82,7 @@ public class Board {
             for (Square square : row) {
                 square.drawPiece(batch);
                 if (Config.DEV) {
-                    font.draw(batch, square.getRow() + "" + square.getCol(), square.getX(), square.getY() + 14);
+                    font.draw(batch, square.getRow() + "," + square.getCol(), square.getX(), square.getY() + 14);
                 }
             }
         }

@@ -1,5 +1,6 @@
 package in.abhinavmishra.jchess;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import in.abhinavmishra.jchess.pieces.PieceColor;
 
@@ -12,6 +13,7 @@ public abstract class Piece {
     protected boolean isSelected;
     protected int x;
     protected int y;
+    protected int size;
 
     private int[][] allowedMoves = {};
 
@@ -34,6 +36,10 @@ public abstract class Piece {
         else return true;
     }
 
+    public boolean isInPiece(int px, int py) {
+        return px >= x && px <= x + size && py >= y && py <= y + size;
+    }
+
     public String getName() {
         return name;
     }
@@ -52,6 +58,10 @@ public abstract class Piece {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 
     public void setSelected(boolean selected) {
