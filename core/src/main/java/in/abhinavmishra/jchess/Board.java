@@ -16,6 +16,10 @@ public class Board {
     final private float squareSize;
 
 
+    public float getSquareSize() {
+        return squareSize;
+    }
+
     public Board(float size) {
         shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
@@ -64,8 +68,10 @@ public class Board {
     }
 
     private void setPieces() {
-        Piece pawn = new Pawn(PieceColor.WHITE,"Pawn",Assets.PAWN_WHITE, 2, 4, (int) (4 * squareSize), (int) (2 * squareSize));
-        squares.get(2).get(4).setPiece(pawn);
+        Utils.setPawns(PieceColor.WHITE, this);
+        Utils.setPawns(PieceColor.BLACK, this);
+//        Piece pawn = new Pawn(PieceColor.WHITE,"Pawn",Assets.PAWN_WHITE, 2, 4, (int) (4 * squareSize), (int) (2 * squareSize));
+//        squares.get(2).get(4).setPiece(pawn);
 
         Piece knight = new Knight(PieceColor.WHITE, "Horse", Assets.HORSE_WHITE, 4, 4, (int) (4 * squareSize), (int) (4 * squareSize));
         squares.get(4).get(4).setPiece(knight);

@@ -16,10 +16,13 @@ public class King extends Piece {
         ArrayList<int[]> moves = new ArrayList<>();
 
         moves.add(new int[]{row, col});
+        moves.add(new int[]{row-1, col});
+        moves.add(new int[]{row, col+1});
+        moves.add(new int[]{row, col-1});
         moves.add(new int[]{row+1, col});
         moves.add(new int[]{row+1, col+1});
-        moves.add(new int[]{row-1, col});
         moves.add(new int[]{row-1, col+1});
+        moves.add(new int[]{row+1, col-1});
         moves.add(new int[]{row+1, col+1});
         moves.add(new int[]{row-1, col-1});
 
