@@ -4,9 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import in.abhinavmishra.jchess.pieces.Knight;
-import in.abhinavmishra.jchess.pieces.Pawn;
-import in.abhinavmishra.jchess.pieces.PieceColor;
+import in.abhinavmishra.jchess.pieces.*;
 
 import java.util.ArrayList;
 
@@ -72,6 +70,17 @@ public class Board {
         Piece knight = new Knight(PieceColor.WHITE, "Horse", Assets.HORSE_WHITE, 4, 4, (int) (4 * squareSize), (int) (4 * squareSize));
         squares.get(4).get(4).setPiece(knight);
 
+        Piece bishop = new Bishop(PieceColor.WHITE, "Bishop", Assets.BISHOP_WHITE, 3,3, (int) (3 * squareSize), (int) (4 * squareSize));
+        squares.get(3).get(3).setPiece(bishop);
+
+        Piece rook = new Rook(PieceColor.WHITE, "Rook", Assets.ROOK_WHITE, 2,5, (int) (2 * squareSize), (int) (5 * squareSize));
+        squares.get(2).get(5).setPiece(rook);
+
+        Piece queen = new Queen(PieceColor.WHITE, "Queen", Assets.QUEEN_WHITE, 5, 6, (int) (5 * squareSize), (int) (6 * squareSize));
+        squares.get(5).get(6).setPiece(queen);
+
+        Piece king = new King(PieceColor.WHITE, "King", Assets.KING_WHITE, 2, 2, (int) (2 * squareSize), (int) (2 * squareSize));
+        squares.get(2).get(2).setPiece(king);
     }
 
     public void renderBoard() {

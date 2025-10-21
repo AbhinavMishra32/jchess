@@ -1,7 +1,9 @@
 package in.abhinavmishra.jchess;
 
 import com.badlogic.gdx.ApplicationLogger;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Logger;
@@ -60,6 +62,9 @@ public class Square {
     public void drawAllowedMoves(ArrayList<ArrayList<Square>> squares) {
         if (piece == null) return;
         int[][] allowedMoves = piece.getAllowedMoves();
+        // this is supposed to make the green shape lesser in opacity idk why its not working (fix later)
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         for(ArrayList<Square> row : squares) {
             for(Square square : row) {
                 // optimize this later as stream + lambda creates temporary objects every frame
@@ -68,11 +73,12 @@ public class Square {
                     .anyMatch(move -> move[0] == square.getRow() && move[1] == square.getCol());
 
                 if (isAllowed) {
-                    shapeRenderer.setColor(Color.GREEN);
+                    shapeRenderer.setColor(0, 1, 0, 0.3f);
                     shapeRenderer.rect(square.getX(), square.getY(), square.getSize(), square.getSize());
                 }
             }
         }
+        Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 
     public boolean isInSquare(int x, int y) {

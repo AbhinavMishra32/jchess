@@ -15,7 +15,7 @@ public abstract class Piece {
     protected int y;
     protected int size;
 
-    private int[][] allowedMoves = {};
+    protected int[][] allowedMoves = {};
 
     public Piece(PieceColor pieceColor, String name, Texture texture, int row, int col, int x, int y) {
         this.name = (name != null) ? name : "";
