@@ -70,7 +70,7 @@ public class Square {
                 // optimize this later as stream + lambda creates temporary objects every frame
                 // (main cause of increasing objects in heap)
                 boolean isAllowed = Arrays.stream(allowedMoves)
-                    .anyMatch(move -> move[0] == square.getRow() && move[1] == square.getCol());
+                    .anyMatch(move -> move[0] == square.getRow() && move[1] == square.getCol() && !(move[0] == this.row && move[1] == this.col));
 
                 if (isAllowed) {
                     shapeRenderer.setColor(0, 1, 0, 0.3f);

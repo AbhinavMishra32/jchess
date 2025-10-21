@@ -70,23 +70,21 @@ public class Board {
     private void setPieces() {
         Utils.setPawns(PieceColor.WHITE, this);
         Utils.setPawns(PieceColor.BLACK, this);
-//        Piece pawn = new Pawn(PieceColor.WHITE,"Pawn",Assets.PAWN_WHITE, 2, 4, (int) (4 * squareSize), (int) (2 * squareSize));
-//        squares.get(2).get(4).setPiece(pawn);
 
-        Piece knight = new Knight(PieceColor.WHITE, "Horse", Assets.HORSE_WHITE, 4, 4, (int) (4 * squareSize), (int) (4 * squareSize));
-        squares.get(4).get(4).setPiece(knight);
+        Utils.setKnights(PieceColor.WHITE, this);
+        Utils.setKnights(PieceColor.BLACK, this);
 
-        Piece bishop = new Bishop(PieceColor.WHITE, "Bishop", Assets.BISHOP_WHITE, 3,3, (int) (3 * squareSize), (int) (4 * squareSize));
-        squares.get(3).get(3).setPiece(bishop);
+        Utils.setBishops(PieceColor.WHITE, this);
+        Utils.setBishops(PieceColor.BLACK, this);
 
-        Piece rook = new Rook(PieceColor.WHITE, "Rook", Assets.ROOK_WHITE, 2,5, (int) (2 * squareSize), (int) (5 * squareSize));
-        squares.get(2).get(5).setPiece(rook);
+        Utils.setRooks(PieceColor.WHITE, this);
+        Utils.setRooks(PieceColor.BLACK, this);
 
-        Piece queen = new Queen(PieceColor.WHITE, "Queen", Assets.QUEEN_WHITE, 5, 6, (int) (5 * squareSize), (int) (6 * squareSize));
-        squares.get(5).get(6).setPiece(queen);
+        Utils.setQueens(PieceColor.WHITE, this);
+        Utils.setQueens(PieceColor.BLACK, this);
 
-        Piece king = new King(PieceColor.WHITE, "King", Assets.KING_WHITE, 2, 2, (int) (2 * squareSize), (int) (2 * squareSize));
-        squares.get(2).get(2).setPiece(king);
+        Utils.setKings(PieceColor.WHITE, this);
+        Utils.setKings(PieceColor.BLACK, this);
     }
 
     public void renderBoard() {
