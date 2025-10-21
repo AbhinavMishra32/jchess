@@ -1,17 +1,14 @@
 package in.abhinavmishra.jchess;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import in.abhinavmishra.jchess.pieces.Knight;
 import in.abhinavmishra.jchess.pieces.Pawn;
 import in.abhinavmishra.jchess.pieces.PieceColor;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Board {
     private ArrayList<ArrayList<Square>> squares = new ArrayList<>();
@@ -69,8 +66,12 @@ public class Board {
     }
 
     private void setPieces() {
-        Piece testPawn = new Pawn(PieceColor.WHITE,"Pawn",Assets.PAWN_TEXTURE, 2, 4, (int) (4 * squareSize), (int) (2 * squareSize));
-        squares.get(2).get(4).setPiece(testPawn);
+        Piece pawn = new Pawn(PieceColor.WHITE,"Pawn",Assets.PAWN_WHITE, 2, 4, (int) (4 * squareSize), (int) (2 * squareSize));
+        squares.get(2).get(4).setPiece(pawn);
+
+        Piece knight = new Knight(PieceColor.WHITE, "Horse", Assets.HORSE_WHITE, 4, 4, (int) (4 * squareSize), (int) (4 * squareSize));
+        squares.get(4).get(4).setPiece(knight);
+
     }
 
     public void renderBoard() {

@@ -2,12 +2,7 @@ package in.abhinavmishra.jchess;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Logger;
-import com.sun.org.apache.bcel.internal.generic.ARRAYLENGTH;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class InputHandler extends InputAdapter {
     Board board;
