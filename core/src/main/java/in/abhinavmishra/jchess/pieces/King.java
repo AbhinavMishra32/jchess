@@ -1,14 +1,16 @@
 package in.abhinavmishra.jchess.pieces;
 
 import com.badlogic.gdx.graphics.Texture;
+import in.abhinavmishra.jchess.Board;
 import in.abhinavmishra.jchess.Piece;
+import in.abhinavmishra.jchess.Square;
 
 import java.util.ArrayList;
 
 public class King extends Piece {
 
-    public King(PieceColor pieceColor, String name, Texture texture, int row, int col, int x, int y) {
-        super(pieceColor, name, texture, row, col, x, y);
+    public King(PieceColor pieceColor, String name, Texture texture, int row, int col, int x, int y, Board board) {
+        super(pieceColor, name, texture, row, col, x, y, board);
     }
 
     @Override

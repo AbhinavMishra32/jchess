@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import in.abhinavmishra.jchess.pieces.PieceColor;
 
+import java.util.ArrayList;
+
 public abstract class Piece {
     private String name;
     private PieceColor pieceColor;
@@ -14,10 +16,11 @@ public abstract class Piece {
     protected int x;
     protected int y;
     protected int size;
+    protected Board board;
 
     protected int[][] allowedMoves = {};
 
-    public Piece(PieceColor pieceColor, String name, Texture texture, int row, int col, int x, int y) {
+    public Piece(PieceColor pieceColor, String name, Texture texture, int row, int col, int x, int y, Board board) {
         this.name = (name != null) ? name : "";
         this.texture = texture;
         this.row = row;
@@ -25,6 +28,8 @@ public abstract class Piece {
         this.x = x;
         this.y = y;
         this.pieceColor = pieceColor;
+        this.board = board;
+
         setAllowedMoves();
     }
 
@@ -54,6 +59,10 @@ public abstract class Piece {
 
     public void setX(int x) {
         this.x = x;
+    }
+
+    public PieceColor getPieceColor() {
+        return pieceColor;
     }
 
     public int getY() {
