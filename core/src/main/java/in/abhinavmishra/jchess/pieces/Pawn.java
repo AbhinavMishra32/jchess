@@ -33,36 +33,31 @@ public class Pawn extends Piece {
                 }
             }
 
-            Piece upperOnce = board.getPieceAt(Math.min(row + 1, 7), Math.min(col + 1, 7));
-            if (upperOnce == null) {
+            Piece upper = board.getPieceAt(Math.min(row + 1, 7), Math.min(col + 1, 7));
+            if (upper == null) {
                 moves.add(new int[]{row + 1, col});
-                Piece upperTwice = board.getPieceAt(Math.min(row + 1, 7), Math.min(col + 1, 7));
-                if (upperTwice == null) {
+                if (this.row == 1) {
                     moves.add(new int[]{row + 2, col});
                 }
             }
+
         } else {
-            Piece upperRight = board.getPieceAt(Math.max(row - 1, 0), Math.min(col - 1, 7));
-            if (upperRight != null && upperRight.getPieceColor() == PieceColor.BLACK) {
+            Piece bottomRight = board.getPieceAt(Math.max(row - 1, 0), Math.min(col + 1, 7));
+            if (bottomRight != null && bottomRight.getPieceColor() == PieceColor.BLACK) {
                 if (isVisibleOnBoard(row - 1, col + 1)) {
                     moves.add(new int[]{row - 1, col + 1});
                 }
             }
-            Piece upperLeft = board.getPieceAt(Math.max(row - 1, 0), Math.min(col - 1, 7));
-            if (upperLeft != null &&  upperLeft.getPieceColor() == PieceColor.BLACK) {
+            Piece bottomLeft = board.getPieceAt(Math.max(row - 1, 0), Math.max(col - 1, 7));
+            if (bottomLeft != null &&  bottomLeft.getPieceColor() == PieceColor.BLACK) {
                 if (isVisibleOnBoard(row - 1, col - 1)) {
                     moves.add(new int[]{row - 1, col - 1});
                 }
             }
 
-            Piece upperOnce = board.getPieceAt(Math.max(row - 1, 0), Math.min(col - 1, 7));
-            if (upperOnce == null) {
-                moves.add(new int[]{row - 1, col});
-                Piece upperTwice = board.getPieceAt(Math.max(row - 1, 0), Math.min(col - 1, 7));
-                if (upperTwice == null) {
-                    moves.add(new int[]{row - 2, col});
-                }
-            }
+//            Piece upper = board.getPieceAt(Math.max(row - 1, 0), Math.min(col - 1, 7));
+//            moves.add(new int[]{row - 1, col});
+//            moves.add(new int[]{row - 2, col});
         }
         allowedMoves = moves.toArray(new int[moves.size()][]);
     }
