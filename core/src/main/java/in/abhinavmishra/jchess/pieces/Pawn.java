@@ -33,7 +33,7 @@ public class Pawn extends Piece {
                 }
             }
 
-            Piece upper = board.getPieceAt(Math.min(row + 1, 7), Math.min(col + 1, 7));
+            Piece upper = board.getPieceAt(Math.min(row + 1, 7), col);
             if (upper == null) {
                 moves.add(new int[]{row + 1, col});
                 if (this.row == 1) {
@@ -43,32 +43,34 @@ public class Pawn extends Piece {
 
         } else {
             Piece bottomRight = board.getPieceAt(Math.max(row - 1, 0), Math.min(col + 1, 7));
-            if (bottomRight != null && bottomRight.getPieceColor() == PieceColor.BLACK) {
+            if (bottomRight != null && bottomRight.getPieceColor() == PieceColor.WHITE) {
                 if (isVisibleOnBoard(row - 1, col + 1)) {
                     moves.add(new int[]{row - 1, col + 1});
                 }
             }
             Piece bottomLeft = board.getPieceAt(Math.max(row - 1, 0), Math.max(col - 1, 7));
-            if (bottomLeft != null &&  bottomLeft.getPieceColor() == PieceColor.BLACK) {
+            if (bottomLeft != null &&  bottomLeft.getPieceColor() == PieceColor.WHITE) {
                 if (isVisibleOnBoard(row - 1, col - 1)) {
                     moves.add(new int[]{row - 1, col - 1});
                 }
             }
 
-//            Piece upper = board.getPieceAt(Math.max(row - 1, 0), Math.min(col - 1, 7));
-//            moves.add(new int[]{row - 1, col});
-//            moves.add(new int[]{row - 2, col});
+            Piece below = board.getPieceAt(Math.min(row - 1, 7), col);
+            if (below == null) {
+                moves.add(new int[]{row - 1, col});
+                if (this.row == 6) {
+                    moves.add(new int[]{row - 2, col});
+                }
+            }
         }
         allowedMoves = moves.toArray(new int[moves.size()][]);
     }
 
     @Override
     public int[][] getAllowedMoves() {
-        if (getPieceColor() == PieceColor.WHITE) {
-            return allowedMoves;
-        } else {
-            return Utils.mirrorAllowedMoves(allowedMoves);
-        }
+        // update the moves (if some piece appeared in front of it)
+        setAllowedMoves();
+        return allowedMoves;
     }
 
 }
