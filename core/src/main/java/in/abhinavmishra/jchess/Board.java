@@ -107,6 +107,11 @@ public class Board {
         return squares.get(row).get(col);
     }
 
+    public Piece getPieceAt(int row, int col) {
+        Square square = getSquareAt(row, col);
+        return square == null ? null : square.getPiece();
+    }
+
     public ArrayList<ArrayList<Square>> getSquares() {
         return squares;
     }

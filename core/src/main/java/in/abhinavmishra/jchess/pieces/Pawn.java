@@ -19,19 +19,51 @@ public class Pawn extends Piece {
     protected void setAllowedMoves() {
         ArrayList<int[]> moves = new ArrayList<>();
         moves.add(new int[]{row, col});
-        if (board.getSquareAt(Math.min(row + 1, 7), row).getPiece() != null) {
-            if (isVisibleOnBoard(row + 1, col)) {
-                moves.add(new int[]{row + 1, col - 1});
+        if (getPieceColor() == PieceColor.WHITE) {
+            Piece upperRight = board.getPieceAt(Math.min(row + 1, 7), Math.min(col + 1, 7));
+            if (upperRight != null && upperRight.getPieceColor() == PieceColor.BLACK) {
+                if (isVisibleOnBoard(row + 1, col + 1)) {
+                    moves.add(new int[]{row + 1, col + 1});
+                }
+            }
+            Piece upperLeft = board.getPieceAt(Math.min(row + 1, 7), Math.min(col + 1, 7));
+            if (upperLeft != null && upperLeft.getPieceColor() == PieceColor.BLACK) {
+                if (isVisibleOnBoard(row + 1, col - 1)) {
+                    moves.add(new int[]{row + 1, col - 1});
+                }
             }
 
-            if (isVisibleOnBoard(row - 1, col)) {
-                moves.add(new int[]{row + 1, col + 1});
+            Piece upperOnce = board.getPieceAt(Math.min(row + 1, 7), Math.min(col + 1, 7));
+            if (upperOnce == null) {
+                moves.add(new int[]{row + 1, col});
+                Piece upperTwice = board.getPieceAt(Math.min(row + 1, 7), Math.min(col + 1, 7));
+                if (upperTwice == null) {
+                    moves.add(new int[]{row + 2, col});
+                }
             }
         } else {
-            moves.add(new int[]{++row, col});
-            moves.add(new int[]{++row, col});
-        }
+            Piece upperRight = board.getPieceAt(Math.max(row - 1, 0), Math.min(col - 1, 7));
+            if (upperRight != null && upperRight.getPieceColor() == PieceColor.BLACK) {
+                if (isVisibleOnBoard(row - 1, col + 1)) {
+                    moves.add(new int[]{row - 1, col + 1});
+                }
+            }
+            Piece upperLeft = board.getPieceAt(Math.max(row - 1, 0), Math.min(col - 1, 7));
+            if (upperLeft != null &&  upperLeft.getPieceColor() == PieceColor.BLACK) {
+                if (isVisibleOnBoard(row - 1, col - 1)) {
+                    moves.add(new int[]{row - 1, col - 1});
+                }
+            }
 
+            Piece upperOnce = board.getPieceAt(Math.max(row - 1, 0), Math.min(col - 1, 7));
+            if (upperOnce == null) {
+                moves.add(new int[]{row - 1, col});
+                Piece upperTwice = board.getPieceAt(Math.max(row - 1, 0), Math.min(col - 1, 7));
+                if (upperTwice == null) {
+                    moves.add(new int[]{row - 2, col});
+                }
+            }
+        }
         allowedMoves = moves.toArray(new int[moves.size()][]);
     }
 
