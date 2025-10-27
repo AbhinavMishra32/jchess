@@ -17,13 +17,26 @@ public class Queen extends Piece {
     protected void setAllowedMoves() {
 
         ArrayList<int[]> moves = new ArrayList<>();
-        int colToRight = this.col;
-        int rowToRight = this.row;
+        int colToRight = this.col + 1;
+        int rowToRight = this.row + 1;
         int colToLeft = this.col;
         int rowToLeft = this.row;
+        boolean seenTopRightDiagonal = false;
+        boolean seenTopLeftDiagonal = false;
+        boolean seenBottomRightDiagonal = false;
+        boolean seenBottomLeftDiagonal = false;
+        boolean seenTop = false;
+        boolean seenBottom = false;
+        boolean left = false;
+        boolean right = false;
 
-        while(isVisibleOnBoard(rowToRight, colToRight)) {
-            moves.add(new int[]{rowToRight, colToRight});
+        while(isVisibleOnBoard(rowToRight, colToRight) && !seenTopRightDiagonal) {
+            if (board.getPieceAt(rowToRight, colToRight) != null || (board.getPieceAt(rowToRight, colToRight) != null && board.getPieceAt(rowToRight, colToRight).getPieceColor() == PieceColor.WHITE)) {
+                moves.add(new int[]{rowToRight,colToRight});
+                seenTopRightDiagonal = true;
+            } else {
+                moves.add(new int[]{rowToRight, colToRight});
+            }
             rowToRight++;
             colToRight++;
         }
@@ -80,6 +93,7 @@ public class Queen extends Piece {
 
     @Override
     protected int[][] getAllowedMoves() {
+        setAllowedMoves();
         return allowedMoves;
     }
 }
