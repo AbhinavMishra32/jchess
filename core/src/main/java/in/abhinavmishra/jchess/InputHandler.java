@@ -2,6 +2,8 @@ package in.abhinavmishra.jchess;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import in.abhinavmishra.jchess.pieces.PieceColor;
+
 import java.util.ArrayList;
 
 public class InputHandler extends InputAdapter {
@@ -20,7 +22,7 @@ public class InputHandler extends InputAdapter {
         int correctedY = Gdx.graphics.getHeight() - screenY;
 
         board.getSquares().forEach(squares -> {squares.forEach(square -> {
-            if (square.isInSquare(screenX, correctedY) && square.getPiece() != null) {
+            if (square.isInSquare(screenX, correctedY) && square.getPiece() != null && square.getPiece().getPieceColor() == board.getTurn()) {
                 selectedSquare = square;
                 selectedPiece = selectedSquare.getPiece();
                 selectedPiece.setSelected(true);
@@ -36,7 +38,7 @@ public class InputHandler extends InputAdapter {
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         int correctedY = Gdx.graphics.getHeight() - screenY;
-        if (selectedPiece != null && selectedPiece.isSelected && selectedPiece.isInPiece(screenX, correctedY)) {
+        if (selectedPiece != null && selectedPiece.isSelected) {
             selectedPiece.setX(screenX + deltaX);
             selectedPiece.setY(correctedY + deltaY);
         }
@@ -71,6 +73,18 @@ public class InputHandler extends InputAdapter {
             if (isAllowed) {
                 selectedSquare.setPiece(null);
                 newSquare.setPiece(selectedPiece);
+
+                if (newSquare != selectedSquare) {
+                    PieceColor nextTurn;
+                    if (board.getTurn() == PieceColor.WHITE) {
+                        nextTurn = PieceColor.BLACK;
+                    } else {
+                        nextTurn = PieceColor.WHITE;
+                    }
+                    board.setTurn(nextTurn);
+                    newSquare.getPiece().setAllowedMoves();
+                }
+
             } else {
                 selectedSquare.setPiece(selectedPiece);
             }

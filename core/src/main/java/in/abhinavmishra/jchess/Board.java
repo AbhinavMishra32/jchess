@@ -14,6 +14,7 @@ public class Board {
     SpriteBatch batch;
     private static final BitmapFont font = new BitmapFont();
     final private float squareSize;
+    PieceColor turn;
 
 
     public float getSquareSize() {
@@ -24,6 +25,7 @@ public class Board {
         shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
         this.squareSize = size;
+        this.turn = PieceColor.WHITE;
         createBoard();
         setPieces();
     }
@@ -42,7 +44,7 @@ public class Board {
                     shapeRenderer,
                     x,
                     y,
-                    (row + col) % 2 == 0 ? Color.WHITE : Color.GRAY,
+                    (row + col) % 2 == 0 ? Color.WHITE : Color.LIME,
                     row,
                     col
                 );
@@ -140,6 +142,14 @@ public class Board {
         }
         batch.end();
 //        shapeRenderer.end();
+    }
+
+    public PieceColor getTurn() {
+        return turn;
+    }
+
+    public void setTurn(PieceColor turn) {
+        this.turn = turn;
     }
 
     public void boardDispose() {
