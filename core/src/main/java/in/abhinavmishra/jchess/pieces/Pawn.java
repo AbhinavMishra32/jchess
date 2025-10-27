@@ -17,6 +17,7 @@ public class Pawn extends Piece {
 
     @Override
     protected void setAllowedMoves() {
+        // TODO: still pawn attack is buggy...
         ArrayList<int[]> moves = new ArrayList<>();
         moves.add(new int[]{row, col});
         if (getPieceColor() == PieceColor.WHITE) {

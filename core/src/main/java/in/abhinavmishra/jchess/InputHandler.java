@@ -38,7 +38,7 @@ public class InputHandler extends InputAdapter {
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         int correctedY = Gdx.graphics.getHeight() - screenY;
-        if (selectedPiece != null && selectedPiece.isSelected) {
+        if (selectedPiece != null && selectedPiece.isSelected && selectedPiece.isInPiece(screenX, correctedY)) {
             selectedPiece.setX(screenX + deltaX);
             selectedPiece.setY(correctedY + deltaY);
         }
