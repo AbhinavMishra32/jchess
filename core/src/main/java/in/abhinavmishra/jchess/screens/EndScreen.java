@@ -1,9 +1,10 @@
 package in.abhinavmishra.jchess.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -13,27 +14,34 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import in.abhinavmishra.jchess.ChessGame;
 import in.abhinavmishra.jchess.pieces.PieceColor;
 
-/** First screen of the application. Displayed after the application is created. */
-public class MenuScreen implements Screen {
+public class EndScreen implements Screen {
 
     private Stage stage;
     private Skin skin;
     final ChessGame game;
+    BitmapFont font;
+    SpriteBatch batch;
+    PieceColor winnerColor;
 
-    public MenuScreen(ChessGame game) {
+    public EndScreen(ChessGame game, PieceColor winnerColor) {
+        batch = new SpriteBatch();
+        font = new BitmapFont();
+        font.setColor(Color.WHITE);
+        font.getData().setScale(2f);
+
         this.game = game;
+        this.winnerColor = winnerColor;
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("gdx-skins/default/skin/uiskin.json"));
 
-        TextButton startButton = new TextButton("Start Game", skin);
+        TextButton startButton = new TextButton("Restart", skin);
         startButton.setSize(200, 50);
-        startButton.setPosition(300, 200);
+        startButton.setPosition(200, 200);
 
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-//                game.setScreen(new GameScreen(game));
                 game.setScreen(new GameScreen(game));
             }
         });
@@ -48,9 +56,14 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        String winnerName = winnerColor == PieceColor.BLACK ? "White won the match!" : "Black wont the match!";
+        batch.begin();
+        font.draw(batch, winnerName, 100, 200); // x=100, y=200
+
         ScreenUtils.clear(Color.BLACK);
         stage.act(delta);
         stage.draw();
+        batch.end();
         // Draw your screen here. "delta" is the time since last render in seconds.
     }
 

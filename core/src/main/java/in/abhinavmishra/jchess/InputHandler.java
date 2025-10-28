@@ -3,6 +3,8 @@ package in.abhinavmishra.jchess;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import in.abhinavmishra.jchess.pieces.PieceColor;
+import in.abhinavmishra.jchess.screens.EndScreen;
+import in.abhinavmishra.jchess.screens.GameScreen;
 
 import java.util.ArrayList;
 
@@ -12,9 +14,11 @@ public class InputHandler extends InputAdapter {
     Piece selectedPiece;
     Integer deltaX;
     Integer deltaY;
+    ChessGame game;
 
-    public InputHandler(Board board) {
+    public InputHandler(Board board, ChessGame game) {
         this.board = board;
+        this.game = game;
     }
 
     @Override
@@ -71,6 +75,10 @@ public class InputHandler extends InputAdapter {
             }
 
             if (isAllowed) {
+                if (newSquare.getPiece() != null && newSquare.getPiece().getName() == "King") {
+                    game.setScreen(new EndScreen(game, newSquare.getPiece().getPieceColor()));
+                }
+
                 selectedSquare.setPiece(null);
                 newSquare.setPiece(selectedPiece);
 

@@ -23,7 +23,7 @@ public class GameScreen implements Screen {
         this.game = game;
         camera = new OrthographicCamera();
         this.board = new Board(screenWidth/8);
-        Gdx.input.setInputProcessor(new InputHandler(board));
+        Gdx.input.setInputProcessor(new InputHandler(board, game));
     }
 
     @Override

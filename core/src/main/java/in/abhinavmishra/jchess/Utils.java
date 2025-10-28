@@ -70,10 +70,10 @@ public class Utils {
     }
     public static void setKings(PieceColor pieceColor, Board board) {
         if (pieceColor == PieceColor.WHITE) {
-            Piece king = new King(PieceColor.WHITE, "Queen", Assets.KING_WHITE, 0, 4, (int) (0 * board.getSquareSize()), (int) (4 * board.getSquareSize()), board);
+            Piece king = new King(PieceColor.WHITE, "King", Assets.KING_WHITE, 0, 4, (int) (0 * board.getSquareSize()), (int) (4 * board.getSquareSize()), board);
             board.getSquares().get(0).get(4).setPiece(king);
         } else {
-            Piece king = new King(PieceColor.BLACK, "Queen", Assets.KING_BLACK, 7, 4, (int) (7 * board.getSquareSize()), (int) (4 * board.getSquareSize()), board);
+            Piece king = new King(PieceColor.BLACK, "King", Assets.KING_BLACK, 7, 4, (int) (7 * board.getSquareSize()), (int) (4 * board.getSquareSize()), board);
             board.getSquares().get(7).get(4).setPiece(king);
         }
     }
