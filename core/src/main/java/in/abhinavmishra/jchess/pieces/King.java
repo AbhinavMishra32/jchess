@@ -17,16 +17,28 @@ public class King extends Piece {
     protected void setAllowedMoves() {
         ArrayList<int[]> moves = new ArrayList<>();
 
-        moves.add(new int[]{row, col});
-        moves.add(new int[]{row-1, col});
-        moves.add(new int[]{row, col+1});
-        moves.add(new int[]{row, col-1});
-        moves.add(new int[]{row+1, col});
-        moves.add(new int[]{row+1, col+1});
-        moves.add(new int[]{row-1, col+1});
-        moves.add(new int[]{row+1, col-1});
-        moves.add(new int[]{row+1, col+1});
-        moves.add(new int[]{row-1, col-1});
+        int[][] directions = {
+            {1, 0},
+            {-1, 0},
+            {0, 1},
+            {0, -1},
+            {1, 1},
+            {1, -1},
+            {-1, 1},
+            {-1, -1}
+        };
+
+        for (int[] dir : directions) {
+            int newRow = row + dir[0];
+            int newCol = col + dir[1];
+
+            if (!isVisibleOnBoard(newRow, newCol)) continue;
+
+            Piece target = board.getPieceAt(newRow, newCol);
+            if (target == null || target.getPieceColor() != getPieceColor()) {
+                moves.add(new int[]{newRow, newCol});
+            }
+        }
 
         allowedMoves = moves.toArray(new int[moves.size()][]);
     }
