@@ -15,42 +15,36 @@ public class Bishop extends Piece {
     @Override
     protected void setAllowedMoves() {
         ArrayList<int[]> moves = new ArrayList<>();
-        int colToRight = this.col;
-        int rowToRight = this.row;
-        int colToLeft = this.col;
-        int rowToLeft = this.row;
+        int[][] directions = {
+            {-1, -1}, {-1, 1}, {1, -1}, {1, 1}
+        };
+        for (int[] dir : directions) {
+            int r = row;
+            int c = col;
 
-        while(isVisibleOnBoard(rowToRight, colToRight)) {
-            moves.add(new int[]{rowToRight, colToRight});
-            rowToRight++;
-            colToRight++;
-        }
+            while(true) {
+                r += dir[0];
+                c += dir[1];
 
-        rowToRight = this.row;
-        colToRight = this.col;
+                if (!isVisibleOnBoard(r, c)) {
+                    break;
+                }
 
-        while(isVisibleOnBoard(rowToRight, colToRight)) {
-            rowToRight--;
-            colToRight++;
-            moves.add(new int[]{rowToRight, colToRight});
-        }
+                Piece pieceAt = board.getPieceAt(r, c);
 
-        while(isVisibleOnBoard(rowToLeft, colToLeft)) {
-            rowToLeft++;
-            colToLeft--;
-            moves.add(new int[]{rowToLeft, colToLeft});
-        }
-
-        rowToLeft = this.row;
-        colToLeft = this.col;
-
-        while(isVisibleOnBoard(rowToLeft, colToLeft)) {
-            rowToLeft--;
-            colToLeft--;
-            moves.add(new int[]{rowToLeft, colToLeft});
+                if (pieceAt == null) {
+                    moves.add(new int[]{r, c});
+                } else {
+                    if (pieceAt.getPieceColor() != this.getPieceColor()) {
+                        moves.add(new int[]{r, c});
+                    }
+                    break;
+                }
+            }
         }
 
         allowedMoves = moves.toArray(new int[moves.size()][]);
+
     }
 
     @Override

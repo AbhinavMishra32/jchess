@@ -20,9 +20,6 @@ public class Pawn extends Piece {
         if (getPieceColor() == PieceColor.WHITE) {
             Piece upperRight = board.getPieceAt(Math.min(row + 1, 7), Math.min(col + 1, 7));
             if (upperRight != null && upperRight.getPieceColor() == PieceColor.BLACK) {
-                if (Config.DEV) {
-                    System.out.println("Adding upper right attack move for white pawn at " + row + "," + col);
-                }
                 if (isVisibleOnBoard(row + 1, col + 1)) {
                     moves.add(new int[]{row + 1, col + 1});
                 }
@@ -49,7 +46,7 @@ public class Pawn extends Piece {
                     moves.add(new int[]{row - 1, col + 1});
                 }
             }
-            Piece bottomLeft = board.getPieceAt(Math.max(row - 1, 0), Math.max(col - 1, 7));
+            Piece bottomLeft = board.getPieceAt(Math.max(row - 1, 0), Math.max(col - 1, 0));
             if (bottomLeft != null &&  bottomLeft.getPieceColor() == PieceColor.WHITE) {
                 if (isVisibleOnBoard(row - 1, col - 1)) {
                     moves.add(new int[]{row - 1, col - 1});

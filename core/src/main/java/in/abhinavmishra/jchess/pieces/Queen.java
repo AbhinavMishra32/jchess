@@ -17,78 +17,37 @@ public class Queen extends Piece {
     protected void setAllowedMoves() {
 
         ArrayList<int[]> moves = new ArrayList<>();
-        int colToRight = this.col + 1;
-        int rowToRight = this.row + 1;
-        int colToLeft = this.col;
-        int rowToLeft = this.row;
-        boolean seenTopRightDiagonal = false;
-        boolean seenTopLeftDiagonal = false;
-        boolean seenBottomRightDiagonal = false;
-        boolean seenBottomLeftDiagonal = false;
-        boolean seenTop = false;
-        boolean seenBottom = false;
-        boolean left = false;
-        boolean right = false;
+        int[][] directions = {
+            {-1, 0}, {1, 0}, {0, -1}, {0, 1},
+            {-1, -1}, {-1, 1}, {1, -1}, {1, 1}
+        };
+        for (int[] dir : directions) {
+            int r = row;
+            int c = col;
 
-        while(isVisibleOnBoard(rowToRight, colToRight) && !seenTopRightDiagonal) {
-            if (board.getPieceAt(rowToRight, colToRight) != null || (board.getPieceAt(rowToRight, colToRight) != null && board.getPieceAt(rowToRight, colToRight).getPieceColor() == PieceColor.WHITE)) {
-                moves.add(new int[]{rowToRight,colToRight});
-                seenTopRightDiagonal = true;
-            } else {
-                moves.add(new int[]{rowToRight, colToRight});
+            while(true) {
+                r += dir[0];
+                c += dir[1];
+
+                if (!isVisibleOnBoard(r, c)) {
+                    break;
+                }
+
+                Piece pieceAt = board.getPieceAt(r, c);
+
+                if (pieceAt == null) {
+                    moves.add(new int[]{r, c});
+                } else {
+                    if (pieceAt.getPieceColor() != this.getPieceColor()) {
+                        moves.add(new int[]{r, c});
+                    }
+                    break;
+                }
             }
-            rowToRight++;
-            colToRight++;
         }
-
-        rowToRight = this.row;
-        colToRight = this.col;
-
-        while(isVisibleOnBoard(rowToRight, colToRight)) {
-            rowToRight--;
-            colToRight++;
-            moves.add(new int[]{rowToRight, colToRight});
-        }
-
-        while(isVisibleOnBoard(rowToLeft, colToLeft)) {
-            rowToLeft++;
-            colToLeft--;
-            moves.add(new int[]{rowToLeft, colToLeft});
-        }
-
-        rowToLeft = this.row;
-        colToLeft = this.col;
-
-        while(isVisibleOnBoard(rowToLeft, colToLeft)) {
-            rowToLeft--;
-            colToLeft--;
-            moves.add(new int[]{rowToLeft, colToLeft});
-        }
-
-        int r = this.row;
-        int c = this.col;
-        while (isVisibleOnBoard(r, c)) {
-            r++;
-            moves.add(new int[]{r, c});
-        }
-        r = this.row;
-        while(isVisibleOnBoard(r, c)) {
-            r--;
-            moves.add(new int[]{r, c});
-        }
-        r = this.row;
-        while(isVisibleOnBoard(r,c)) {
-            c++;
-            moves.add(new int[]{r, c});
-        }
-        c = this.col;
-        while(isVisibleOnBoard(r, c)) {
-            c--;
-            moves.add(new int[]{r, c});
-        }
-        c = this.col;
 
         allowedMoves = moves.toArray(new int[moves.size()][]);
+
     }
 
     @Override

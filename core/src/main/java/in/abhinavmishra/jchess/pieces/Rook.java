@@ -15,29 +15,34 @@ public class Rook extends Piece {
     @Override
     protected void setAllowedMoves() {
         ArrayList<int[]> moves = new ArrayList<>();
+        int[][] directions = {
+            {-1, 0}, {1, 0}, {0, -1}, {0, 1},
+        };
+        for (int[] dir : directions) {
+            int r = row;
+            int c = col;
 
-        int r = this.row;
-        int c = this.col;
-        while (isVisibleOnBoard(r, c)) {
-            r++;
-            moves.add(new int[]{r, c});
+            while(true) {
+                r += dir[0];
+                c += dir[1];
+
+                if (!isVisibleOnBoard(r, c)) {
+                    break;
+                }
+
+                Piece pieceAt = board.getPieceAt(r, c);
+
+                if (pieceAt == null) {
+                    moves.add(new int[]{r, c});
+                } else {
+                    if (pieceAt.getPieceColor() != this.getPieceColor()) {
+                        moves.add(new int[]{r, c});
+                    }
+                    break;
+                }
+            }
         }
-        r = this.row;
-        while(isVisibleOnBoard(r, c)) {
-            r--;
-            moves.add(new int[]{r, c});
-        }
-        r = this.row;
-        while(isVisibleOnBoard(r,c)) {
-            c++;
-            moves.add(new int[]{r, c});
-        }
-        c = this.col;
-        while(isVisibleOnBoard(r, c)) {
-            c--;
-            moves.add(new int[]{r, c});
-        }
-        c = this.col;
+
         allowedMoves = moves.toArray(new int[moves.size()][]);
 
     }
