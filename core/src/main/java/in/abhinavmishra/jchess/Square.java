@@ -43,6 +43,9 @@ public class Square {
             piece.setY((int) this.y);
             piece.row = this.row;
             piece.col = this.col;
+            if (Config.DEV) {
+                System.out.println("Placed " + piece.getName() + " at (" + row + ", " + col + ")");
+            }
             piece.setAllowedMoves();
         }
     }
@@ -72,7 +75,11 @@ public class Square {
                 boolean isAllowed = Arrays.stream(allowedMoves)
                     .anyMatch(move -> move[0] == square.getRow() && move[1] == square.getCol() && !(move[0] == this.row && move[1] == this.col));
 
-                if (isAllowed) {
+                if (isAllowed && square.getPiece() != null) {
+                    shapeRenderer.setColor(1, 0, 0, 0.3f);
+                    shapeRenderer.rect(square.getX(), square.getY(), square.getSize(), square.getSize());
+                }
+                else if (isAllowed) {
                     shapeRenderer.setColor(0, 1, 0, 0.3f);
                     shapeRenderer.rect(square.getX(), square.getY(), square.getSize(), square.getSize());
                 }

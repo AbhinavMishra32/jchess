@@ -1,10 +1,7 @@
 package in.abhinavmishra.jchess.pieces;
 
 import com.badlogic.gdx.graphics.Texture;
-import in.abhinavmishra.jchess.Board;
-import in.abhinavmishra.jchess.Piece;
-import in.abhinavmishra.jchess.Square;
-import in.abhinavmishra.jchess.Utils;
+import in.abhinavmishra.jchess.*;
 
 import java.util.ArrayList;
 
@@ -23,11 +20,14 @@ public class Pawn extends Piece {
         if (getPieceColor() == PieceColor.WHITE) {
             Piece upperRight = board.getPieceAt(Math.min(row + 1, 7), Math.min(col + 1, 7));
             if (upperRight != null && upperRight.getPieceColor() == PieceColor.BLACK) {
+                if (Config.DEV) {
+                    System.out.println("Adding upper right attack move for white pawn at " + row + "," + col);
+                }
                 if (isVisibleOnBoard(row + 1, col + 1)) {
                     moves.add(new int[]{row + 1, col + 1});
                 }
             }
-            Piece upperLeft = board.getPieceAt(Math.min(row + 1, 7), Math.min(col + 1, 7));
+            Piece upperLeft = board.getPieceAt(Math.min(row + 1, 7), Math.max(col - 1, 0));
             if (upperLeft != null && upperLeft.getPieceColor() == PieceColor.BLACK) {
                 if (isVisibleOnBoard(row + 1, col - 1)) {
                     moves.add(new int[]{row + 1, col - 1});
