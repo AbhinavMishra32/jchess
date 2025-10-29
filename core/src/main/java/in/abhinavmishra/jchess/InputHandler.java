@@ -7,6 +7,7 @@ import in.abhinavmishra.jchess.screens.EndScreen;
 import in.abhinavmishra.jchess.screens.GameScreen;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class InputHandler extends InputAdapter {
     Board board;
@@ -75,12 +76,17 @@ public class InputHandler extends InputAdapter {
             }
 
             if (isAllowed) {
-                if (newSquare.getPiece() != null && newSquare.getPiece().getName() == "King") {
-                    game.setScreen(new EndScreen(game, newSquare.getPiece().getPieceColor()));
-                }
-
                 selectedSquare.setPiece(null);
                 newSquare.setPiece(selectedPiece);
+
+                if (board.getAllowedSquaresOfAllPieces(board.getTurn()).stream()
+                    .flatMap(List::stream)
+                    .anyMatch(square -> square.getPiece() != null && "King".equals(square.getPiece().getName()))){
+                        System.out.println("checkmate by placing " + newSquare.getPiece().getName() + " at " + newSquare.getRow() + ", " + newSquare.getCol());
+                };
+//                if (newSquare.getPiece() != null && newSquare.getPiece().getName() == "King") {
+//                    game.setScreen(new EndScreen(game, newSquare.getPiece().getPieceColor()));
+//                }
 
                 if (newSquare != selectedSquare) {
                     PieceColor nextTurn;

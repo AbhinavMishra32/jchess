@@ -1,5 +1,7 @@
 package in.abhinavmishra.jchess;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -56,13 +58,24 @@ public class Board {
 
     public ArrayList<Square> getAllowedSquares(Square square) {
         ArrayList<Square> allowedSquares = new ArrayList<>();
-        if (square.getPiece() != null) {
-            for (int[] allowedMoves : square.getPiece().getAllowedMoves()) {
-                if (allowedMoves == null || allowedMoves.length < 2) continue;
-                int row = allowedMoves[0];
-                int col = allowedMoves[1];
-                if (row >= 0 && row < 8 && col >= 0 && col < 8) {
-                    allowedSquares.add(this.getSquareAt(row, col));
+        if (square.getPiece() == null) return allowedSquares;
+        for (int[] allowedMoves : square.getPiece().getAllowedMoves()) {
+            if (allowedMoves == null || allowedMoves.length < 2) continue;
+            int row = allowedMoves[0];
+            int col = allowedMoves[1];
+            if (row >= 0 && row < 8 && col >= 0 && col < 8) {
+                allowedSquares.add(this.getSquareAt(row, col));
+            }
+        }
+        return allowedSquares;
+    }
+
+    public ArrayList<ArrayList<Square>> getAllowedSquaresOfAllPieces(PieceColor pieceColor) {
+        ArrayList<ArrayList<Square>> allowedSquares = new ArrayList<>();
+        for (ArrayList<Square> squareRow : squares) {
+            for (Square square : squareRow) {
+                if (square.getPiece() != null && square.getPiece().getPieceColor() == pieceColor) {
+                    allowedSquares.add(getAllowedSquares(square));
                 }
             }
         }
@@ -97,10 +110,16 @@ public class Board {
             }
         }
         squares.forEach(squares -> {squares.forEach(square -> {
-            if (square.isSelected()) {
+            if (Gdx.input.isKeyPressed(Input.Keys.U)) {
+                if (square.getPiece() != null && square.getPiece().getName() == "Pawn") return;
+                square.drawAllowedMoves(this.squares);
+            }
+            else if (square.isSelected()) {
                 square.drawAllowedMoves(this.squares);
             }
         });});
+
+
         shapeRenderer.end();
     }
 
