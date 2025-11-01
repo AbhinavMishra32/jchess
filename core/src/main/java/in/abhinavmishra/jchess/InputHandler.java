@@ -27,17 +27,20 @@ public class InputHandler extends InputAdapter {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         int correctedY = Gdx.graphics.getHeight() - screenY;
 
-        board.getSquares().forEach(squares -> {squares.forEach(square -> {
-            if (square.isInSquare(screenX, correctedY) && square.getPiece() != null && square.getPiece().getPieceColor() == board.getTurn()) {
-                selectedSquare = square;
-                selectedPiece = selectedSquare.getPiece();
-                selectedPiece.setSelected(true);
-                selectedSquare.setSelected(true);
-                selectedPiece.setSize((int) selectedSquare.getSize());
-                deltaX = selectedSquare.getPiece().getX() - screenX;
-                deltaY = selectedSquare.getPiece().getY() - correctedY;
-            }
-        });});
+        board.getSquares().forEach(squares -> {
+            squares.forEach(square -> {
+                if (square.isInSquare(screenX, correctedY) && square.getPiece() != null
+                        && square.getPiece().getPieceColor() == board.getTurn()) {
+                    selectedSquare = square;
+                    selectedPiece = selectedSquare.getPiece();
+                    selectedPiece.setSelected(true);
+                    selectedSquare.setSelected(true);
+                    selectedPiece.setSize((int) selectedSquare.getSize());
+                    deltaX = selectedSquare.getPiece().getX() - screenX;
+                    deltaY = selectedSquare.getPiece().getY() - correctedY;
+                }
+            });
+        });
         return super.touchDown(screenX, screenY, pointer, button);
     }
 
@@ -58,10 +61,9 @@ public class InputHandler extends InputAdapter {
             selectedPiece.setSelected(false);
 
             Square newSquare = board.getSquareAtCoords(
-                selectedPiece.getCenterCoords()[0],
-                selectedPiece.getCenterCoords()[1],
-                selectedSquare
-            );
+                    selectedPiece.getCenterCoords()[0],
+                    selectedPiece.getCenterCoords()[1],
+                    selectedSquare);
 
             ArrayList<Square> allowedSquares = board.getAllowedSquares(selectedSquare);
 
@@ -77,59 +79,50 @@ public class InputHandler extends InputAdapter {
             }
 
             PieceColor nextTurn;
-                if (board.getTurn() == PieceColor.WHITE) {
-                    nextTurn = PieceColor.BLACK;
-                } else {
-                    nextTurn = PieceColor.WHITE;
-                }
+            if (board.getTurn() == PieceColor.WHITE) {
+                nextTurn = PieceColor.BLACK;
+            } else {
+                nextTurn = PieceColor.WHITE;
+            }
 
-                if (isAllowed) {
-                    selectedSquare.setPiece(null);
-                    newSquare.setPiece(selectedPiece);
+            if (isAllowed) {
+                PieceColor movingPlayerColor = board.getTurn();
 
-                    boolean canGetAway = false;
-                    if (Utils.isKingInCheck(board, nextTurn)) {
-                        System.out.println("check by placing " + newSquare.getPiece().getName() + " at " + newSquare.getRow() + ", " + newSquare.getCol());                    for (Square square : Utils.getSquaresOfColor(board, nextTurn)) {
-                        ArrayList<Square> allowed = board.getAllowedSquares(square);
-                        if (allowed == null) continue;
+                selectedSquare.setPiece(null);
+                newSquare.setPiece(selectedPiece);
 
-                        for (Square allowedSquare : allowed) {
-                            // Skip if it's not actually a move (same position)
-                            if (allowedSquare.getRow() == square.getRow() && allowedSquare.getCol() == square.getCol()) {
-                                continue;
-                            }
-
-                            Board cloned = board.clone();
-                            Square fromClone = cloned.getSquareAt(square.getRow(), square.getCol());
-                            Square toClone = cloned.getSquareAt(allowedSquare.getRow(), allowedSquare.getCol());
-
-                            Piece movingPiece = fromClone.getPiece();
-                            toClone.setPiece(movingPiece, true);
-                            fromClone.setPiece(null);
-
-                            if (!Utils.isKingInCheck(cloned, nextTurn)) {
-                                if (movingPiece != null) {
-                                    System.out.println("Check cleared by: " + movingPiece.getName() + " moving from ("
-                                        + square.getRow() + ", " + square.getCol() + ") to ("
-                                        + allowedSquare.getRow() + ", " + allowedSquare.getCol() + ")");
-                                }
-                                canGetAway = true;
-                                break;
-                            }
-
+                // Recalculate all pieces' allowed moves after the move
+                for (ArrayList<Square> row : board.getSquares()) {
+                    for (Square sq : row) {
+                        if (sq.getPiece() != null) {
+                            sq.getPiece().setAllowedMoves();
                         }
-                        if (canGetAway) break;
-                    }
-                    if (!canGetAway) {
-                        System.out.println("CHECKMATE");
-                        game.setScreen(new EndScreen(game, nextTurn));
-
                     }
                 }
 
                 if (newSquare != selectedSquare) {
                     board.setTurn(nextTurn);
-                    newSquare.getPiece().setAllowedMoves();
+                }
+
+                // Check if the player who just moved exposed their own King
+                if (Utils.isKingInCheck(board, movingPlayerColor)) {
+                    System.out.println(movingPlayerColor + " is in check after their move!");
+
+                    if (!Utils.canEscapeCheck(board, movingPlayerColor)) {
+                        System.out.println("CHECKMATE - " + movingPlayerColor + " loses!");
+                        game.setScreen(new EndScreen(game, movingPlayerColor));
+                    }
+                }
+
+                // Check if the opponent is in check or checkmate
+                if (Utils.isKingInCheck(board, nextTurn)) {
+                    System.out.println("check by placing " + selectedPiece.getName() + " at " + newSquare.getRow()
+                            + ", " + newSquare.getCol());
+
+                    if (!Utils.canEscapeCheck(board, nextTurn)) {
+                        System.out.println("CHECKMATE");
+                        game.setScreen(new EndScreen(game, nextTurn));
+                    }
                 }
 
             } else {

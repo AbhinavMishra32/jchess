@@ -18,8 +18,8 @@ public class GameScreen implements Screen {
     private Camera camera;
 
     public GameScreen(ChessGame game) {
-        this.screenWidth = Gdx.graphics.getWidth();
-        this.screenHeight = Gdx.graphics.getHeight();
+        this.screenWidth = 600;
+        this.screenHeight = 600;
         this.game = game;
         camera = new OrthographicCamera();
         this.board = new Board(screenWidth/8);

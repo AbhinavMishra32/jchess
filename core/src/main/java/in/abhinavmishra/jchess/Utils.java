@@ -131,4 +131,35 @@ public class Utils {
         return new ArrayList<Square>(sList);
     }
 
+    public static boolean canEscapeCheck(Board board, PieceColor color) {
+        for (Square square : getSquaresOfColor(board, color)) {
+            ArrayList<Square> allowed = board.getAllowedSquares(square);
+            if (allowed == null) continue;
+
+            for (Square allowedSquare : allowed) {
+                if (allowedSquare.getRow() == square.getRow() && allowedSquare.getCol() == square.getCol()) {
+                    continue;
+                }
+
+                Board cloned = board.clone();
+                Square fromClone = cloned.getSquareAt(square.getRow(), square.getCol());
+                Square toClone = cloned.getSquareAt(allowedSquare.getRow(), allowedSquare.getCol());
+
+                Piece movingPiece = fromClone.getPiece();
+                toClone.setPiece(movingPiece, true);
+                fromClone.setPiece(null);
+
+                if (!isKingInCheck(cloned, color)) {
+                    if (Config.DEV) {
+                        System.out.println("Check cleared by: " + movingPiece.getName() + " moving from ("
+                                + square.getRow() + ", " + square.getCol() + ") to ("
+                                + allowedSquare.getRow() + ", " + allowedSquare.getCol() + ")");
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

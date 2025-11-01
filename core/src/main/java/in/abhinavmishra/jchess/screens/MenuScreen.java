@@ -6,7 +6,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -26,19 +28,46 @@ public class MenuScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("gdx-skins/default/skin/uiskin.json"));
 
-        TextButton startButton = new TextButton("Start Game", skin);
-        startButton.setSize(200, 50);
-        startButton.setPosition(300, 200);
+        Table table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
 
+        // Title label
+        Label titleLabel = new Label("JChess", skin);
+        titleLabel.setFontScale(4f);
+        titleLabel.setColor(Color.BLACK);
+
+        // Subtitle
+        Label subtitleLabel = new Label("A Chess Game", skin);
+        subtitleLabel.setFontScale(2f);
+        subtitleLabel.setColor(Color.BLACK);
+
+        // Author label
+        Label authorLabel = new Label("Made by Abhinav Mishra", skin);
+        authorLabel.setFontScale(1.2f);
+        authorLabel.setColor(Color.BLACK);
+        
+        Label githubLabel = new Label("@AbhinavMishra32", skin);
+        githubLabel.setFontScale(1f);
+        githubLabel.setColor(Color.BLACK);
+
+        // Start button
+        TextButton startButton = new TextButton("Start Game", skin);
+        startButton.getLabel().setFontScale(2f);
+        startButton.getLabel().setColor(Color.BLACK);
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-//                game.setScreen(new GameScreen(game));
                 game.setScreen(new GameScreen(game));
             }
         });
 
-        stage.addActor(startButton);
+        // Layout
+        table.add(titleLabel).padBottom(30).row();
+        table.add(subtitleLabel).padBottom(50).row();
+        table.add(startButton).width(300).height(80).pad(10).row();
+        table.add(authorLabel).padTop(100).row();
+        table.add(githubLabel).padTop(10);
     }
 
     @Override
@@ -48,10 +77,10 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.BLACK);
+        // White background
+        ScreenUtils.clear(Color.WHITE);
         stage.act(delta);
         stage.draw();
-        // Draw your screen here. "delta" is the time since last render in seconds.
     }
 
     @Override

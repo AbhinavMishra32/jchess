@@ -3,50 +3,65 @@ package in.abhinavmishra.jchess.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import in.abhinavmishra.jchess.ChessGame;
 import in.abhinavmishra.jchess.pieces.PieceColor;
 
+import java.awt.*;
+
 public class EndScreen implements Screen {
 
     private Stage stage;
     private Skin skin;
     final ChessGame game;
-    BitmapFont font;
-    SpriteBatch batch;
-    PieceColor winnerColor;
+    private PieceColor winnerColor;
+    private Label winnerLabel;
 
     public EndScreen(ChessGame game, PieceColor winnerColor) {
-        batch = new SpriteBatch();
-        font = new BitmapFont();
-        font.setColor(Color.WHITE);
-        font.getData().setScale(2f);
-
-        this.game = game;
         this.winnerColor = winnerColor;
+        this.game = game;
+
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("gdx-skins/default/skin/uiskin.json"));
 
+        // Table for layout
+        Table table = new Table();
+        table.setFillParent(true);
+
         TextButton startButton = new TextButton("Restart", skin);
-        startButton.setSize(200, 50);
-        startButton.setPosition(200, 200);
+        startButton.getLabel().setFontScale(2f);
+        // Ensure label text is black on white background
+        startButton.getLabel().setColor(Color.BLACK);
+        // Also set style fontColor (some skins use this)
+        TextButton.TextButtonStyle tstyle = startButton.getStyle();
+        tstyle.fontColor = Color.BLACK;
+        startButton.setStyle(tstyle);
 
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new MenuScreen(game));
             }
         });
 
-        stage.addActor(startButton);
+        // Winner label - text is set in render() based on winnerColor
+        this.winnerLabel = new Label("", skin);
+        winnerLabel.setFontScale(2f);
+        winnerLabel.setColor(Color.BLACK);
+
+        table.center();
+        table.add(winnerLabel).padBottom(30).row();
+        table.add(startButton).width(300).height(80).pad(10).row();
+
+        stage.addActor(table);
     }
 
     @Override
@@ -56,14 +71,14 @@ public class EndScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        String winnerName = winnerColor == PieceColor.BLACK ? "White won the match!" : "Black won the match!";
-        batch.begin();
-        font.draw(batch, winnerName, 100, 200); // x=100, y=200
+        // White background and black text to match MenuScreen
+        ScreenUtils.clear(Color.WHITE);
 
-        ScreenUtils.clear(Color.BLACK);
+        String winnerName = winnerColor == PieceColor.WHITE ? "Black won the match!" : "White won the match!";
+        winnerLabel.setText(winnerName);
+
         stage.act(delta);
         stage.draw();
-        batch.end();
         // Draw your screen here. "delta" is the time since last render in seconds.
     }
 
