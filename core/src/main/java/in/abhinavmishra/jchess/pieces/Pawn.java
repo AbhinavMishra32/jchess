@@ -14,7 +14,6 @@ public class Pawn extends Piece {
 
     @Override
     protected void setAllowedMoves() {
-        // TODO: still pawn attack is buggy...
         ArrayList<int[]> moves = new ArrayList<>();
         moves.add(new int[]{row, col});
         if (getPieceColor() == PieceColor.WHITE) {
@@ -34,7 +33,7 @@ public class Pawn extends Piece {
             Piece upper = board.getPieceAt(Math.min(row + 1, 7), col);
             if (upper == null) {
                 moves.add(new int[]{row + 1, col});
-                if (this.row == 1) {
+                if (this.row == 1 && board.getSquareAt(row + 2, col).getPiece() == null) {
                     moves.add(new int[]{row + 2, col});
                 }
             }
@@ -56,7 +55,7 @@ public class Pawn extends Piece {
             Piece below = board.getPieceAt(Math.min(row - 1, 7), col);
             if (below == null) {
                 moves.add(new int[]{row - 1, col});
-                if (this.row == 6) {
+                if (this.row == 6 && board.getSquareAt(row - 2, col).getPiece() == null) {
                     moves.add(new int[]{row - 2, col});
                 }
             }

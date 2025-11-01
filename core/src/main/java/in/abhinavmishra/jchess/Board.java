@@ -28,6 +28,7 @@ public class Board {
         batch = new SpriteBatch();
         this.squareSize = size;
         this.turn = PieceColor.WHITE;
+        font.setColor(Color.BLACK);
         createBoard();
         setPieces();
     }
@@ -169,6 +170,39 @@ public class Board {
 
     public void setTurn(PieceColor turn) {
         this.turn = turn;
+    }
+
+    public Board clone() {
+        Board copy = new Board(this.squareSize);
+        copy.setTurn(this.getTurn());
+        
+        // Clear all pieces from the fresh board first
+        for (ArrayList<Square> row : copy.getSquares()) {
+            for (Square square : row) {
+                square.setPiece(null);
+            }
+        }
+        
+        // Now copy pieces from the current board
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece original = this.getSquares().get(row).get(col).getPiece();
+                if (original != null) {
+                    Piece copiedPiece = original.copy();
+                    copiedPiece.board = copy;  // Update the board reference to the cloned board
+                    copy.getSquares().get(row).get(col).setPiece(copiedPiece);
+                }
+            }
+        }
+
+        for (ArrayList<Square> row : copy.getSquares()) {
+            for (Square square : row) {
+                if (square.getPiece() != null) {
+                    square.getPiece().setAllowedMoves();
+                }
+            }
+        }
+        return copy;
     }
 
     public void boardDispose() {

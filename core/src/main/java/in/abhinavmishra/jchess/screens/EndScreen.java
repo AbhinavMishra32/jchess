@@ -56,7 +56,7 @@ public class EndScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        String winnerName = winnerColor == PieceColor.BLACK ? "White won the match!" : "Black wont the match!";
+        String winnerName = winnerColor == PieceColor.BLACK ? "White won the match!" : "Black won the match!";
         batch.begin();
         font.draw(batch, winnerName, 100, 200); // x=100, y=200
 

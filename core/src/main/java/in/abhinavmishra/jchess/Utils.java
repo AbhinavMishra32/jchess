@@ -2,6 +2,11 @@ package in.abhinavmishra.jchess;
 
 import in.abhinavmishra.jchess.pieces.*;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Utils {
     public static void setPawns(PieceColor pieceColor, Board board) {
         for(int i = 0; i < 8; i++) {
@@ -87,6 +92,43 @@ public class Utils {
             mirrored[i][1] = col;
         }
         return mirrored;
+    }
+
+    public static boolean isKingInCheck(Board board, PieceColor color) {
+        PieceColor opponent = (color == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE;
+        
+        // Find the King's position
+        Square kingSquare = null;
+        for (ArrayList<Square> row : board.getSquares()) {
+            for (Square square : row) {
+                if (square.getPiece() != null && 
+                    "King".equals(square.getPiece().getName()) && 
+                    square.getPiece().getPieceColor() == color) {
+                    kingSquare = square;
+                    break;
+                }
+            }
+            if (kingSquare != null) break;
+        }
+        
+        if (kingSquare == null) return false;
+        
+        final int kingRow = kingSquare.getRow();
+        final int kingCol = kingSquare.getCol();
+        
+        // Check if any opponent piece can attack the King's position
+        return board.getAllowedSquaresOfAllPieces(opponent).stream()
+            .flatMap(List::stream)
+            .anyMatch(square -> square.getRow() == kingRow && square.getCol() == kingCol);
+    }
+
+    public static ArrayList<Square> getSquaresOfColor(Board board, PieceColor color) {
+        List<Square> sList =  board.getSquares().stream()
+            .flatMap(List::stream)
+            .filter(square -> square.getPiece() != null && square.getPiece().getPieceColor() == color)
+            .collect(Collectors.toList());
+
+        return new ArrayList<Square>(sList);
     }
 
 }

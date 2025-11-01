@@ -2,12 +2,13 @@ package in.abhinavmishra.jchess;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import in.abhinavmishra.jchess.pieces.Pawn;
 import in.abhinavmishra.jchess.pieces.PieceColor;
 import in.abhinavmishra.jchess.screens.EndScreen;
 import in.abhinavmishra.jchess.screens.GameScreen;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class InputHandler extends InputAdapter {
     Board board;
@@ -75,26 +76,58 @@ public class InputHandler extends InputAdapter {
                 }
             }
 
-            if (isAllowed) {
-                selectedSquare.setPiece(null);
-                newSquare.setPiece(selectedPiece);
+            PieceColor nextTurn;
+                if (board.getTurn() == PieceColor.WHITE) {
+                    nextTurn = PieceColor.BLACK;
+                } else {
+                    nextTurn = PieceColor.WHITE;
+                }
 
-                if (board.getAllowedSquaresOfAllPieces(board.getTurn()).stream()
-                    .flatMap(List::stream)
-                    .anyMatch(square -> square.getPiece() != null && "King".equals(square.getPiece().getName()))){
-                        System.out.println("checkmate by placing " + newSquare.getPiece().getName() + " at " + newSquare.getRow() + ", " + newSquare.getCol());
-                };
-//                if (newSquare.getPiece() != null && newSquare.getPiece().getName() == "King") {
-//                    game.setScreen(new EndScreen(game, newSquare.getPiece().getPieceColor()));
-//                }
+                if (isAllowed) {
+                    selectedSquare.setPiece(null);
+                    newSquare.setPiece(selectedPiece);
+
+                    boolean canGetAway = false;
+                    if (Utils.isKingInCheck(board, nextTurn)) {
+                        System.out.println("check by placing " + newSquare.getPiece().getName() + " at " + newSquare.getRow() + ", " + newSquare.getCol());                    for (Square square : Utils.getSquaresOfColor(board, nextTurn)) {
+                        ArrayList<Square> allowed = board.getAllowedSquares(square);
+                        if (allowed == null) continue;
+
+                        for (Square allowedSquare : allowed) {
+                            // Skip if it's not actually a move (same position)
+                            if (allowedSquare.getRow() == square.getRow() && allowedSquare.getCol() == square.getCol()) {
+                                continue;
+                            }
+
+                            Board cloned = board.clone();
+                            Square fromClone = cloned.getSquareAt(square.getRow(), square.getCol());
+                            Square toClone = cloned.getSquareAt(allowedSquare.getRow(), allowedSquare.getCol());
+
+                            Piece movingPiece = fromClone.getPiece();
+                            toClone.setPiece(movingPiece, true);
+                            fromClone.setPiece(null);
+
+                            if (!Utils.isKingInCheck(cloned, nextTurn)) {
+                                if (movingPiece != null) {
+                                    System.out.println("Check cleared by: " + movingPiece.getName() + " moving from ("
+                                        + square.getRow() + ", " + square.getCol() + ") to ("
+                                        + allowedSquare.getRow() + ", " + allowedSquare.getCol() + ")");
+                                }
+                                canGetAway = true;
+                                break;
+                            }
+
+                        }
+                        if (canGetAway) break;
+                    }
+                    if (!canGetAway) {
+                        System.out.println("CHECKMATE");
+                        game.setScreen(new EndScreen(game, nextTurn));
+
+                    }
+                }
 
                 if (newSquare != selectedSquare) {
-                    PieceColor nextTurn;
-                    if (board.getTurn() == PieceColor.WHITE) {
-                        nextTurn = PieceColor.BLACK;
-                    } else {
-                        nextTurn = PieceColor.WHITE;
-                    }
                     board.setTurn(nextTurn);
                     newSquare.getPiece().setAllowedMoves();
                 }

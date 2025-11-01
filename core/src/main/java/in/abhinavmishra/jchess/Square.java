@@ -43,10 +43,28 @@ public class Square {
             piece.setY((int) this.y);
             piece.row = this.row;
             piece.col = this.col;
-            if (Config.DEV) {
-                System.out.println("Placed " + piece.getName() + " at (" + row + ", " + col + ")");
+//            if (Config.DEV) {
+//                System.out.println("Placed " + piece.getName() + " at (" + row + ", " + col + ")");
+//            }
+            if (piece.getName() != "simPawn") {
+                piece.setAllowedMoves();
             }
-            piece.setAllowedMoves();
+        }
+    }
+
+    public void setPiece(Piece piece, boolean simulate) {
+        this.piece = piece;
+        if (piece != null) {
+            piece.setX((int) this.x);
+            piece.setY((int) this.y);
+            piece.row = this.row;
+            piece.col = this.col;
+            if (Config.DEV && simulate) {
+                System.out.println("Placed " + piece.getName() + " at (" + row + ", " + col + ")" + " [SIMULATED]");
+            }
+            if (piece.getName() != "simPawn") {
+                piece.setAllowedMoves();
+            }
         }
     }
 

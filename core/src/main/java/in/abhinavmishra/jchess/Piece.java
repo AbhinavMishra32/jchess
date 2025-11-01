@@ -73,11 +73,36 @@ public abstract class Piece {
         this.y = y;
     }
 
+    public void setLocation(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
+
     public void setSize(int size) {
         this.size = size;
     }
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public Piece copy() {
+        try {
+            return this.getClass()
+                .getConstructor(PieceColor.class, String.class, Texture.class, int.class, int.class, int.class, int.class, Board.class)
+                .newInstance(
+                    this.pieceColor,
+                    this.name,
+                    this.texture,
+                    this.row,
+                    this.col,
+                    this.x,
+                    this.y,
+                    this.board
+                );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
