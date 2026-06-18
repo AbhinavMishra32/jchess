@@ -1,4 +1,4 @@
-# JChess
+# JChess (HAND-MADE)
 
 A fully-functional chess game built with [libGDX](https://libgdx.com/) featuring complete chess rule implementation, check/checkmate detection, and an intuitive drag-and-drop interface.
 
